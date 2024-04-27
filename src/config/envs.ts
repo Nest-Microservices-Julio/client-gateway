@@ -13,7 +13,7 @@ const envsSchema = Joi.object({
     PRODUCTS_MICROSERVICE_HOST: Joi.string().required(),
     PRODUCTS_MICROSERVICE_PORT: Joi.number().required(),
 })
-.unknown()
+.unknown(true)
 
 const {error, value} = envsSchema.validate(process.env)
 
