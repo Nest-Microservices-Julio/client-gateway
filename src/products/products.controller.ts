@@ -25,15 +25,21 @@ export class ProductsController {
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
-    return this.productsClient.send({ cmd: 'create_product' }, createProductDto);
+    return this.productsClient.send(
+      { cmd: 'create_product' },
+      createProductDto,
+    );
   }
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.productsClient.send(
-      { cmd: 'find_all_products' },
-      paginationDto,
-    );
+    return this.productsClient
+      .send({ cmd: 'find_all_products' }, paginationDto)
+      .pipe(
+        catchError((error) => {
+          throw new RpcException(error);
+        }),
+      );
   }
 
   @Get(':id')
@@ -58,15 +64,25 @@ export class ProductsController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     console.log(id);
-    return this.productsClient.send({ cmd: 'remove_product' }, { id });
+    return this.productsClient.send({ cmd: 'remove_product' }, { id }).pipe(
+      catchError((error) => {
+        throw new RpcException(error);
+      }),
+    );
   }
 
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() { ...updateProductDto}: UpdateProductDto,
+    @Body() { ...updateProductDto }: UpdateProductDto,
   ) {
     console.log(id, updateProductDto);
-    return this.productsClient.send({ cmd: 'update_product' }, { id, ...updateProductDto });
+    return this.productsClient
+      .send({ cmd: 'update_product' }, { id, ...updateProductDto })
+      .pipe(
+        catchError((error) => {
+          throw new RpcException(error);
+        }),
+      );
   }
 }
