@@ -17,7 +17,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
     }),
-  );
+  );    
 
   app.useGlobalFilters(new RpcCustomExceptionFilter())
 
@@ -26,3 +26,4 @@ async function bootstrap() {
   logger.log(`Server is running on http://localhost:${envs.port}`);
 }
 bootstrap();
+  
